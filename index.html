@@ -65,6 +65,9 @@
             color: white;
             padding: var(--spacing-lg) var(--spacing-md);
             padding-top: calc(var(--spacing-lg) + env(safe-area-inset-top));
+            position: sticky;
+            top: 0;
+            z-index: 20;
         }
 
         .header-title {
@@ -104,6 +107,11 @@
         /* Date Navigation Styles */
         .date-nav {
             padding: var(--spacing-md);
+            background-color: white;
+            position: sticky;
+            top: calc(5rem + env(safe-area-inset-top));
+            z-index: 10;
+            box-shadow: var(--shadow-sm);
         }
 
         .month-selector {
@@ -127,13 +135,12 @@
             width: 2rem;
             height: 2rem;
             background-color: white;
-            border: none;
+            border: 1px solid var(--primary-light);
             border-radius: var(--border-radius-full);
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--primary-color);
-            box-shadow: var(--shadow-sm);
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -171,12 +178,34 @@
             box-shadow: var(--shadow-sm);
             scroll-snap-align: start;
             transition: all 0.2s ease;
+            position: relative;
+            border: 1px solid transparent;
         }
 
         .date-item.active {
             background-color: var(--primary-color);
             color: white;
             box-shadow: var(--shadow-md);
+        }
+
+        .date-item::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: transparent;
+        }
+
+        .date-item.has-bookings::after {
+            background-color: var(--dopio-color);
+        }
+
+        .date-item.active.has-bookings::after {
+            background-color: white;
         }
 
         .date-weekday {
@@ -187,6 +216,148 @@
         .date-day {
             font-size: var(--font-size-lg);
             font-weight: 700;
+        }
+
+        /* View Options */
+        .view-options {
+            display: flex;
+            padding: var(--spacing-md);
+            gap: var(--spacing-sm);
+            background-color: white;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .view-tab {
+            flex: 1;
+            text-align: center;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-medium);
+            border: 1px solid var(--text-light);
+        }
+
+        .view-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Room List View */
+        .room-list {
+            padding: 0 var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .room-category {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .category-title {
+            font-size: var(--font-size-sm);
+            text-transform: uppercase;
+            color: var(--text-medium);
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .category-marker {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .marker-dopio {
+            background-color: var(--dopio-color);
+        }
+
+        .marker-triple {
+            background-color: var(--triple-color);
+        }
+
+        .marker-suite {
+            background-color: var(--suite-color);
+        }
+
+        .room-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-sm);
+        }
+
+        .room-card {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+            padding: var(--spacing-md);
+            position: relative;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .room-card:active {
+            transform: scale(0.98);
+        }
+
+        .room-card-dopio {
+            border-left-color: var(--dopio-color);
+        }
+
+        .room-card-triple {
+            border-left-color: var(--triple-color);
+        }
+
+        .room-card-suite {
+            border-left-color: var(--suite-color);
+        }
+
+        .room-title {
+            font-weight: 700;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .room-status {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--border-radius-full);
+        }
+
+        .room-status-available {
+            background-color: var(--available-color);
+            color: green;
+        }
+
+        .room-status-booked {
+            background-color: var(--booked-color);
+            color: #e63946;
+        }
+
+        .room-status-pending {
+            background-color: var(--pending-color);
+            color: #ee9b00;
+        }
+
+        .room-details {
+            font-size: var(--font-size-xs);
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .room-client {
+            font-size: var(--font-size-sm);
+            font-weight: 500;
         }
 
         /* Stats Summary */
@@ -258,11 +429,185 @@
             background-color: var(--suite-color);
         }
 
-        /* Bookings List */
-        .bookings-container {
-            flex: 1;
-            overflow-y: auto;
+        /* Daily Calendar View */
+        .daily-calendar {
             padding: 0 var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .time-slots {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .time-slot {
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-md);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .time-slot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .time-slot-title {
+            font-weight: 600;
+        }
+
+        .booking-entry {
+            border-left: 3px solid transparent;
+            padding-left: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .booking-entry:active {
+            transform: scale(0.98);
+        }
+
+        .booking-entry-dopio {
+            border-left-color: var(--dopio-color);
+            background-color: rgba(239, 71, 111, 0.05);
+        }
+
+        .booking-entry-triple {
+            border-left-color: var(--triple-color);
+            background-color: rgba(6, 214, 160, 0.05);
+        }
+
+        .booking-entry-suite {
+            border-left-color: var(--suite-color);
+            background-color: rgba(131, 56, 236, 0.05);
+        }
+
+        .booking-info {
+            flex: 1;
+        }
+
+        .booking-room {
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+        }
+
+        .booking-client {
+            font-size: var(--font-size-xs);
+            color: var(--text-medium);
+        }
+
+        .booking-badge {
+            font-size: var(--font-size-xs);
+            padding: 3px var(--spacing-sm);
+            border-radius: var(--border-radius-full);
+            font-weight: 600;
+        }
+
+        .booking-badge-booked {
+            background-color: var(--booked-color);
+            color: #e63946;
+        }
+
+        .booking-badge-pending {
+            background-color: var(--pending-color);
+            color: #ee9b00;
+        }
+
+        /* Monthly Calendar View */
+        .monthly-calendar {
+            margin: 0 var(--spacing-md);
+            overflow-x: auto;
+            background-color: white;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--spacing-xl);
+            display: none;
+        }
+
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        .calendar-table th, .calendar-table td {
+            border: 1px solid #e9ecef;
+            padding: var(--spacing-sm);
+            text-align: center;
+        }
+
+        .calendar-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .calendar-cell {
+            height: 48px;
+            cursor: pointer;
+            font-size: var(--font-size-xs);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .cell-booked {
+            background-color: var(--booked-color);
+        }
+
+        .cell-pending {
+            background-color: var(--pending-color);
+        }
+
+        .cell-available {
+            background-color: var(--available-color);
+        }
+
+        .cell-dopio::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background-color: var(--dopio-color);
+        }
+
+        .cell-triple::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background-color: var(--triple-color);
+        }
+
+        .cell-suite::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background-color: var(--suite-color);
+        }
+
+        /* Bookings List */
+        .bookings-list {
+            padding: 0 var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
         }
 
         .bookings-section {
@@ -345,6 +690,35 @@
 
         .border-suite {
             border-left: 4px solid var(--suite-color);
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-xl) var(--spacing-md);
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            color: var(--text-light);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .empty-title {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-medium);
+        }
+
+        .empty-description {
+            font-size: var(--font-size-sm);
+            color: var(--text-light);
+            margin-bottom: var(--spacing-lg);
         }
 
         /* Floating Button */
@@ -471,89 +845,63 @@
             color: white;
         }
 
+        .btn-danger {
+            background-color: var(--error-color);
+            color: white;
+        }
+
         .btn:hover {
             transform: translateY(-1px);
         }
 
-        /* Mobile Calendar for Small Screens */
-        .mobile-calendar {
-            margin-top: var(--spacing-md);
-            display: block;
+        /* Details Panel */
+        .booking-details-panel {
+            background-color: white;
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--spacing-md);
         }
 
-        .desktop-calendar {
-            display: none;
-            overflow-x: auto;
+        .details-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-md);
         }
 
-        .calendar-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 700px;
+        .details-title {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
         }
 
-        .calendar-table th, .calendar-table td {
-            border: 1px solid #e9ecef;
-            padding: var(--spacing-sm);
-            text-align: center;
-        }
-
-        .calendar-table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .calendar-cell {
-            height: 48px;
-            cursor: pointer;
+        .details-status {
             font-size: var(--font-size-xs);
-            transition: all 0.2s ease;
-            position: relative;
+            font-weight: 600;
+            padding: 3px var(--spacing-sm);
+            border-radius: var(--border-radius-full);
         }
 
-        .cell-booked {
-            background-color: var(--booked-color);
+        .details-info {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: var(--spacing-xs) var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
         }
 
-        .cell-pending {
-            background-color: var(--pending-color);
+        .details-label {
+            font-size: var(--font-size-sm);
+            color: var(--text-medium);
         }
 
-        .cell-available {
-            background-color: var(--available-color);
+        .details-value {
+            font-size: var(--font-size-sm);
+            font-weight: 500;
         }
 
-        .cell-dopio::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background-color: var(--dopio-color);
-        }
-
-        .cell-triple::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background-color: var(--triple-color);
-        }
-
-        .cell-suite::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background-color: var(--suite-color);
+        .details-actions {
+            display: flex;
+            gap: var(--spacing-sm);
         }
 
         /* Loading Indicator */
@@ -602,6 +950,45 @@
             transform: translate(-50%, -10px);
         }
 
+        /* Tab Navigation */
+        .tab-navigation {
+            display: flex;
+            background-color: white;
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius-full);
+            margin: 0 var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab-button {
+            flex: 1;
+            text-align: center;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-full);
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+            background: none;
+            border: none;
+            color: var(--text-medium);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .view-container {
+            display: none;
+        }
+
+        .view-container.active {
+            display: block;
+        }
+
         /* Responsive Styles */
         /* iPhone 13 Pro (Smaller iPhone) */
         @media screen and (max-width: 390px) {
@@ -624,33 +1011,24 @@
             }
         }
 
-        /* iPhone 15 Pro Max and Similar */
-        @media screen and (min-width: 391px) and (max-width: 430px) {
-            /* Already optimized in the base styles */
-        }
-
         /* Tablets */
         @media screen and (min-width: 768px) {
-            .header {
-                padding: var(--spacing-lg) var(--spacing-xl);
+            .header, .date-nav {
+                padding-left: var(--spacing-xl);
+                padding-right: var(--spacing-xl);
             }
             
-            .date-nav, .stats-summary, .bookings-container {
-                padding: 0 var(--spacing-xl);
+            .tab-navigation, .stats-summary, .room-list, .daily-calendar, .bookings-list, .monthly-calendar {
+                margin-left: var(--spacing-xl);
+                margin-right: var(--spacing-xl);
             }
             
-            .mobile-calendar {
-                display: none;
+            .room-cards {
+                grid-template-columns: repeat(2, 1fr);
             }
             
-            .desktop-calendar {
+            .monthly-calendar {
                 display: block;
-                margin: 0 var(--spacing-xl);
-                margin-top: var(--spacing-md);
-                border-radius: var(--border-radius-md);
-                box-shadow: var(--shadow-sm);
-                background-color: white;
-                padding: var(--spacing-md);
             }
             
             .stats-card {
@@ -683,75 +1061,14 @@
                 flex-direction: column;
             }
             
-            .sidebar-header {
-                padding-bottom: var(--spacing-lg);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                margin-bottom: var(--spacing-lg);
-            }
-            
-            .main-logo {
-                font-size: var(--font-size-xl);
-                font-weight: 700;
-                margin-bottom: var(--spacing-md);
-            }
-            
-            .sidebar-menu {
-                list-style: none;
-                flex: 1;
-            }
-            
-            .menu-item {
-                margin-bottom: var(--spacing-sm);
-                padding: var(--spacing-sm) var(--spacing-md);
-                border-radius: var(--border-radius-md);
-                cursor: pointer;
-                transition: all 0.2s ease;
-                display: flex;
-                align-items: center;
-                gap: var(--spacing-sm);
-            }
-            
-            .menu-item:hover, .menu-item.active {
-                background-color: rgba(255, 255, 255, 0.1);
-            }
-            
-            .menu-item.active {
-                background-color: var(--primary-color);
-            }
-            
             .main-content {
                 flex: 1;
-                display: flex;
-                flex-direction: column;
                 max-height: 100vh;
                 overflow: auto;
             }
             
-            .header {
-                position: sticky;
-                top: 0;
-                z-index: 10;
-            }
-            
-            .content-wrapper {
-                display: flex;
-                flex: 1;
-                overflow: hidden;
-            }
-            
-            .left-panel {
-                width: 350px;
-                flex-shrink: 0;
-                overflow-y: auto;
-                border-right: 1px solid #e9ecef;
-                background-color: var(--background-white);
-                padding: var(--spacing-md);
-            }
-            
-            .right-panel {
-                flex: 1;
-                overflow-y: auto;
-                padding: var(--spacing-md);
+            .room-cards {
+                grid-template-columns: repeat(3, 1fr);
             }
             
             .floating-btn {
@@ -764,36 +1081,22 @@
                 margin-bottom: var(--spacing-lg);
             }
             
-            .btn-desktop {
-                padding: var(--spacing-md) var(--spacing-lg);
-                border-radius: var(--border-radius-md);
-                font-weight: 600;
-                cursor: pointer;
-                border: none;
-                transition: all 0.2s ease;
+            .main-layout {
+                display: grid;
+                grid-template-columns: 350px 1fr;
+                gap: var(--spacing-md);
+                margin: var(--spacing-md) var(--spacing-xl);
             }
             
-            .btn-primary-desktop {
-                background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
-                color: white;
+            .main-panel, .side-panel {
+                overflow-y: auto;
+                max-height: calc(100vh - 10rem);
             }
             
-            .btn-secondary-desktop {
+            .side-panel {
                 background-color: white;
-                color: var(--text-dark);
-                border: 1px solid #e9ecef;
-            }
-            
-            .btn-desktop:hover {
-                transform: translateY(-1px);
-                box-shadow: var(--shadow-sm);
-            }
-        }
-
-        /* Large Desktops */
-        @media screen and (min-width: 1200px) {
-            .left-panel {
-                width: 400px;
+                border-radius: var(--border-radius-md);
+                padding: var(--spacing-md);
             }
         }
 
@@ -814,14 +1117,13 @@
     </style>
 </head>
 <body>
-    <!-- Mobile View (default) -->
     <div class="main-content">
         <!-- Header -->
         <div class="header">
             <h1 class="header-title">Sistemi i Rezervimit të Hotelit</h1>
             <div class="header-actions">
                 <div class="header-stats">15 rezervime aktive</div>
-                <button class="btn-add" id="add-booking-mobile">Shto</button>
+                <button class="btn-add" id="add-booking-btn">Shto</button>
             </div>
         </div>
 
@@ -841,11 +1143,18 @@
             </div>
         </div>
 
+        <!-- View Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-button active" data-view="rooms-view">Dhomat</button>
+            <button class="tab-button" data-view="daily-view">Rezervimet</button>
+            <button class="tab-button" data-view="monthly-view">Kalendari</button>
+        </div>
+
         <!-- Statistics Summary -->
         <div class="stats-summary">
             <div class="stats-card">
                 <div class="stats-title">Dhoma Dopio</div>
-                <div class="stats-value">5 <span class="stats-fraction">/ 8</span></div>
+                <div class="stats-value">5 <span class="stats-fraction">/ 5</span></div>
                 <div class="progress-bar">
                     <div class="progress-value progress-dopio" style="width: 62.5%"></div>
                 </div>
@@ -866,123 +1175,82 @@
             </div>
         </div>
 
-        <!-- Mobile Calendar (tablets+ will use desktop view) -->
-        <div class="mobile-calendar">
-            <!-- Bookings List -->
-            <div class="bookings-container">
-                <div class="bookings-section">
-                    <h3 class="section-title">Rezervimet e sotme</h3>
-                    <div class="booking-card">
-                        <div class="booking-content border-dopio">
-                            <div class="booking-header">
-                                <div>
-                                    <div class="booking-room">Dhomë Dopio 1</div>
-                                    <div class="booking-client">Emri Klientit</div>
-                                </div>
-                                <div class="booking-status status-booked">E Rezervuar</div>
-                            </div>
-                            <div class="booking-date">10 Prill - 15 Prill (5 netë)</div>
-                        </div>
+        <!-- Room List View -->
+        <div class="view-container active" id="rooms-view">
+            <div class="room-list" id="room-list">
+                <!-- Dopio Rooms -->
+                <div class="room-category">
+                    <div class="category-title">
+                        <div class="category-marker marker-dopio"></div>
+                        Dhoma Dopio
+                    </div>
+                    <div class="room-cards" id="dopio-rooms">
+                        <!-- Will be populated by JS -->
                     </div>
                 </div>
-                
-                <div class="bookings-section">
-                    <h3 class="section-title">Rezervimet e ardhshme</h3>
-                    <div class="booking-card">
-                        <div class="booking-content border-triple">
-                            <div class="booking-header">
-                                <div>
-                                    <div class="booking-room">Dhomë Tre Persona 2</div>
-                                    <div class="booking-client">Emri Klientit</div>
-                                </div>
-                                <div class="booking-status status-pending">Në Pritje</div>
-                            </div>
-                            <div class="booking-date">12 Prill - 18 Prill (6 netë)</div>
-                        </div>
+
+                <!-- Triple Rooms -->
+                <div class="room-category">
+                    <div class="category-title">
+                        <div class="category-marker marker-triple"></div>
+                        Dhoma Triple
                     </div>
-                    
-                    <div class="booking-card">
-                        <div class="booking-content border-suite">
-                            <div class="booking-header">
-                                <div>
-                                    <div class="booking-room">Suite 6</div>
-                                    <div class="booking-client">Emri Klientit</div>
-                                </div>
-                                <div class="booking-status status-booked">E Rezervuar</div>
-                            </div>
-                            <div class="booking-date">20 Prill - 23 Prill (3 netë)</div>
-                        </div>
+                    <div class="room-cards" id="triple-rooms">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Suite Rooms -->
+                <div class="room-category">
+                    <div class="category-title">
+                        <div class="category-marker marker-suite"></div>
+                        Suite
+                    </div>
+                    <div class="room-cards" id="suite-rooms">
+                        <!-- Will be populated by JS -->
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Desktop Calendar (only visible on tablets and larger) -->
-        <div class="desktop-calendar">
-            <table class="calendar-table">
-                <thead>
-                    <tr>
-                        <th>Dhoma</th>
-                        <!-- Days will be added by JS -->
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
-                        <th>6</th>
-                        <th>7</th>
-                        <th>8</th>
-                        <th>9</th>
-                        <th>10</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Example rows - would be generated by JS -->
-                    <tr>
-                        <td>Dhomë Dopio 1</td>
-                        <td class="calendar-cell cell-available cell-dopio"></td>
-                        <td class="calendar-cell cell-available cell-dopio"></td>
-                        <td class="calendar-cell cell-available cell-dopio"></td>
-                        <td class="calendar-cell cell-available cell-dopio"></td>
-                        <td class="calendar-cell cell-available cell-dopio"></td>
-                        <td class="calendar-cell cell-available cell-dopio"></td>
-                        <td class="calendar-cell cell-available cell-dopio"></td>
-                        <td class="calendar-cell cell-available cell-dopio"></td>
-                        <td class="calendar-cell cell-booked cell-dopio">Emri</td>
-                        <td class="calendar-cell cell-booked cell-dopio">Emri</td>
-                    </tr>
-                    <tr>
-                        <td>Dhomë Triple 2</td>
-                        <td class="calendar-cell cell-available cell-triple"></td>
-                        <td class="calendar-cell cell-available cell-triple"></td>
-                        <td class="calendar-cell cell-available cell-triple"></td>
-                        <td class="calendar-cell cell-available cell-triple"></td>
-                        <td class="calendar-cell cell-available cell-triple"></td>
-                        <td class="calendar-cell cell-available cell-triple"></td>
-                        <td class="calendar-cell cell-available cell-triple"></td>
-                        <td class="calendar-cell cell-available cell-triple"></td>
-                        <td class="calendar-cell cell-available cell-triple"></td>
-                        <td class="calendar-cell cell-pending cell-triple">Emri</td>
-                    </tr>
-                    <tr>
-                        <td>Suite 6</td>
-                        <td class="calendar-cell cell-available cell-suite"></td>
-                        <td class="calendar-cell cell-available cell-suite"></td>
-                        <td class="calendar-cell cell-available cell-suite"></td>
-                        <td class="calendar-cell cell-available cell-suite"></td>
-                        <td class="calendar-cell cell-available cell-suite"></td>
-                        <td class="calendar-cell cell-available cell-suite"></td>
-                        <td class="calendar-cell cell-available cell-suite"></td>
-                        <td class="calendar-cell cell-available cell-suite"></td>
-                        <td class="calendar-cell cell-available cell-suite"></td>
-                        <td class="calendar-cell cell-available cell-suite"></td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Daily Calendar View -->
+        <div class="view-container" id="daily-view">
+            <div class="daily-calendar" id="daily-calendar">
+                <div class="bookings-section">
+                    <h3 class="section-title">Rezervimet për <span id="selected-date-display">sot</span></h3>
+                    <div id="daily-bookings">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+                
+                <div class="bookings-section">
+                    <h3 class="section-title">Rezervimet e ardhshme</h3>
+                    <div id="upcoming-bookings">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Calendar View -->
+        <div class="view-container" id="monthly-view">
+            <div class="monthly-calendar">
+                <table class="calendar-table">
+                    <thead>
+                        <tr id="calendar-header">
+                            <th>Dhoma</th>
+                            <!-- Days will be generated by JS -->
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-body">
+                        <!-- Will be generated by JS -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- Floating Action Button (mobile only) -->
+    <!-- Floating Action Button -->
     <button class="floating-btn" id="floating-add-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -1052,12 +1320,14 @@
                 <h2 class="modal-title">Detaje të Rezervimit</h2>
             </div>
             <div class="modal-body">
-                <div id="booking-details-content"></div>
+                <div id="booking-details-content">
+                    <!-- Will be populated by JS -->
+                </div>
             </div>
             <div class="modal-footer">
+                <button class="btn btn-danger" id="delete-booking">Fshij</button>
                 <button class="btn btn-secondary" id="close-details">Mbyll</button>
                 <button class="btn btn-primary" id="edit-booking">Ndrysho</button>
-                <button class="btn btn-secondary" id="delete-booking" style="background-color: #ef476f; color: white;">Fshij</button>
             </div>
         </div>
     </div>
@@ -1073,7 +1343,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
     <script>
-        // Të dhënat e dhomave me numrat e saktë
+        // Të dhënat e dhomave me numrat e saktë (nga kodi origjinal)
         const roomData = {
             'dopio': ['1', '4', '5', '10', '11'],
             'triple': ['2', '3', '8', '9'],
@@ -1088,13 +1358,15 @@
         let currentYear = currentDate.getFullYear();
         let currentBooking = null;
         let selectedDate = new Date();
+        selectedDate.setHours(0, 0, 0, 0);
 
         // Elementet e DOM
         const dateSlider = document.getElementById('date-slider');
         const currentMonthElement = document.getElementById('current-month');
+        const selectedDateDisplay = document.getElementById('selected-date-display');
         const prevMonthButton = document.getElementById('prev-month');
         const nextMonthButton = document.getElementById('next-month');
-        const addBookingMobileButton = document.getElementById('add-booking-mobile');
+        const addBookingButton = document.getElementById('add-booking-btn');
         const floatingAddButton = document.getElementById('floating-add-btn');
         const bookingModal = document.getElementById('booking-modal');
         const bookingForm = document.getElementById('booking-form');
@@ -1113,8 +1385,46 @@
         const closeDetailsButton = document.getElementById('close-details');
         const editBookingButton = document.getElementById('edit-booking');
         const deleteBookingButton = document.getElementById('delete-booking');
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const viewContainers = document.querySelectorAll('.view-container');
+        const dopioRoomsContainer = document.getElementById('dopio-rooms');
+        const tripleRoomsContainer = document.getElementById('triple-rooms');
+        const suiteRoomsContainer = document.getElementById('suite-rooms');
+        const dailyBookingsContainer = document.getElementById('daily-bookings');
+        const upcomingBookingsContainer = document.getElementById('upcoming-bookings');
+        const calendarHeader = document.getElementById('calendar-header');
+        const calendarBody = document.getElementById('calendar-body');
         const toastNotification = document.getElementById('toast-notification');
         const loader = document.getElementById('loader');
+
+        // Tab Navigation
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetView = button.getAttribute('data-view');
+                
+                // Update active button
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Show target view, hide others
+                viewContainers.forEach(container => {
+                    if (container.id === targetView) {
+                        container.classList.add('active');
+                    } else {
+                        container.classList.remove('active');
+                    }
+                });
+                
+                // Refresh the specific view
+                if (targetView === 'rooms-view') {
+                    updateRoomListView();
+                } else if (targetView === 'daily-view') {
+                    updateDailyView();
+                } else if (targetView === 'monthly-view') {
+                    updateMonthlyCalendar();
+                }
+            });
+        });
 
         // Inicializo datën e sotme në slider
         initializeDateSlider();
@@ -1131,17 +1441,25 @@
             
             for (let day = 1; day <= daysInMonth; day++) {
                 const date = new Date(currentYear, currentMonth, day);
+                date.setHours(0, 0, 0, 0);
                 const dayOfWeek = date.getDay();
                 // Konverto në indeksin tonë (0=E hënë, ..., 6=E diel)
                 const weekDayIndex = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
                 const weekDay = weekDayNames[weekDayIndex];
                 
-                const isToday = day === currentDate.getDate() && 
-                                currentMonth === currentDate.getMonth() && 
-                                currentYear === currentDate.getFullYear();
+                const isToday = date.getTime() === selectedDate.getTime();
+                
+                // Check if this date has any bookings
+                const hasBookings = bookings.some(booking => {
+                    const checkIn = new Date(booking.checkIn);
+                    const checkOut = new Date(booking.checkOut);
+                    checkIn.setHours(0, 0, 0, 0);
+                    checkOut.setHours(0, 0, 0, 0);
+                    return date >= checkIn && date < checkOut;
+                });
                 
                 const dateItem = document.createElement('div');
-                dateItem.className = `date-item ${isToday ? 'active' : ''}`;
+                dateItem.className = `date-item ${isToday ? 'active' : ''} ${hasBookings ? 'has-bookings' : ''}`;
                 dateItem.setAttribute('data-date', formatDate(date));
                 dateItem.innerHTML = `
                     <div class="date-weekday">${weekDay}</div>
@@ -1154,20 +1472,34 @@
                     });
                     this.classList.add('active');
                     selectedDate = new Date(this.getAttribute('data-date'));
-                    // Rifresko rezervimet bazuar në datën e zgjedhur
-                    applyBookingsToCalendar();
+                    selectedDate.setHours(0, 0, 0, 0);
+                    updateSelectedDateDisplay();
+                    
+                    // Rifresko pamjet
+                    updateRoomListView();
+                    updateDailyView();
+                    updateCalendarIndicators();
                 });
                 
                 dateSlider.appendChild(dateItem);
             }
             
-            // Scroll to today or first day
+            // Scroll to selected date
             setTimeout(() => {
                 const activeDate = document.querySelector('.date-item.active');
                 if (activeDate) {
                     activeDate.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                 }
             }, 100);
+            
+            updateSelectedDateDisplay();
+        }
+
+        // Përditëso shfaqjen e datës së zgjedhur
+        function updateSelectedDateDisplay() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = selectedDate.toLocaleDateString('sq-AL', options);
+            selectedDateDisplay.textContent = formattedDate;
         }
 
         // Funksion për të inicializuar bazën e të dhënave SQLite
@@ -1208,12 +1540,20 @@
                         )
                     `);
                     
+                    // Shto disa të dhëna demo nëse është baza e re
+                    addDemoData();
+                    
                     showToast("U krijua një bazë e re e të dhënave");
                 }
                 
                 // Lexo të gjitha rezervimet nga baza e të dhënave
                 loadBookingsFromDatabase();
                 hideLoader();
+                
+                // Përditëso të gjitha pamjet
+                updateRoomListView();
+                updateDailyView();
+                updateMonthlyCalendar();
                 
             } catch (error) {
                 console.error('Gabim gjatë inicializimit të bazës së të dhënave:', error);
@@ -1224,6 +1564,77 @@
                 alert('Ka ndodhur një gabim me bazën e të dhënave. Duke përdorur localStorage si plan rezervë.');
                 loadBackupData();
             }
+        }
+
+        // Funksion për të shtuar të dhëna demo
+        function addDemoData() {
+            const now = new Date().toISOString();
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            // Krijo disa rezervime demo
+            const demoBookings = [
+                {
+                    id: '1001',
+                    roomType: 'dopio',
+                    roomNumber: '1',
+                    clientName: 'Artan Kelmendi',
+                    checkIn: formatDate(today),
+                    checkOut: formatDate(new Date(today.getTime() + 3 * 24 * 60 * 60 * 1000)),
+                    status: 'booked',
+                    comments: 'Prenotim për vikend',
+                    createdAt: now,
+                    updatedAt: now
+                },
+                {
+                    id: '1002',
+                    roomType: 'triple',
+                    roomNumber: '3',
+                    clientName: 'Besa Haxhiu',
+                    checkIn: formatDate(new Date(today.getTime() + 2 * 24 * 60 * 60 * 1000)),
+                    checkOut: formatDate(new Date(today.getTime() + 5 * 24 * 60 * 60 * 1000)),
+                    status: 'pending',
+                    comments: 'Familje me fëmijë',
+                    createdAt: now,
+                    updatedAt: now
+                },
+                {
+                    id: '1003',
+                    roomType: 'suite',
+                    roomNumber: '7',
+                    clientName: 'Drilon Berisha',
+                    checkIn: formatDate(new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000)),
+                    checkOut: formatDate(new Date(today.getTime() + 10 * 24 * 60 * 60 * 1000)),
+                    status: 'booked',
+                    comments: 'Ditëlindje speciale',
+                    createdAt: now,
+                    updatedAt: now
+                }
+            ];
+            
+            // Shto rezervimet demo në bazën e të dhënave
+            demoBookings.forEach(booking => {
+                db.run(`
+                    INSERT INTO bookings (
+                        id, roomType, roomNumber, clientName, 
+                        checkIn, checkOut, status, comments,
+                        createdAt, updatedAt
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                `, [
+                    booking.id,
+                    booking.roomType,
+                    booking.roomNumber,
+                    booking.clientName,
+                    booking.checkIn,
+                    booking.checkOut,
+                    booking.status,
+                    booking.comments,
+                    booking.createdAt,
+                    booking.updatedAt
+                ]);
+            });
+            
+            saveDatabase();
         }
 
         // Funksion për të ngarkuar rezervimet nga baza e të dhënave
@@ -1251,11 +1662,43 @@
                     updateBookingStats();
                 }
                 
-                applyBookingsToCalendar();
+                // Mark dates with bookings in the date slider
+                updateCalendarIndicators();
             } catch (error) {
                 console.error('Gabim gjatë ngarkimit të rezervimeve:', error);
                 showToast("Gabim gjatë ngarkimit të rezervimeve", true);
             }
+        }
+
+        // Update calendar indicators for dates with bookings
+        function updateCalendarIndicators() {
+            // First reset all indicators
+            document.querySelectorAll('.date-item').forEach(item => {
+                item.classList.remove('has-bookings');
+            });
+            
+            // Then mark dates with bookings
+            bookings.forEach(booking => {
+                const checkIn = new Date(booking.checkIn);
+                const checkOut = new Date(booking.checkOut);
+                checkIn.setHours(0, 0, 0, 0);
+                checkOut.setHours(0, 0, 0, 0);
+                
+                const currentDate = new Date(currentYear, currentMonth, 1);
+                const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
+                
+                for (let day = 1; day <= lastDay; day++) {
+                    currentDate.setDate(day);
+                    
+                    if (currentDate >= checkIn && currentDate < checkOut) {
+                        const dateStr = formatDate(currentDate);
+                        const dateItem = document.querySelector(`.date-item[data-date="${dateStr}"]`);
+                        if (dateItem) {
+                            dateItem.classList.add('has-bookings');
+                        }
+                    }
+                }
+            });
         }
 
         // Funksion për të përditësuar statistikat e rezervimeve
@@ -1332,29 +1775,90 @@
             if (savedBookings) {
                 bookings = JSON.parse(savedBookings);
                 updateBookingStats();
-                applyBookingsToCalendar();
+                
+                // Rifresko të gjitha pamjet
+                updateRoomListView();
+                updateDailyView();
+                updateMonthlyCalendar();
             }
         }
 
-        // Funksion për të zbatuar rezervimet në kalendar
-        function applyBookingsToCalendar() {
-            // Zbato logjikën për të rifreskuar kartat e rezervimeve mobile
-            updateMobileBookingCards();
+        // Funksion për të përditësuar pamjen e listës së dhomave
+        function updateRoomListView() {
+            const dopioHTML = generateRoomCardsByType('dopio');
+            const tripleHTML = generateRoomCardsByType('triple');
+            const suiteHTML = generateRoomCardsByType('suite');
             
-            // Zbato logjikën për të rifreskuar kalendarin desktop
-            // (do të implementohet sipas nevojës)
+            dopioRoomsContainer.innerHTML = dopioHTML;
+            tripleRoomsContainer.innerHTML = tripleHTML;
+            suiteRoomsContainer.innerHTML = suiteHTML;
             
-            // Përditëso statistikat
-            updateBookingStats();
+            // Add event listeners to room cards
+            document.querySelectorAll('.room-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const roomType = this.getAttribute('data-room-type');
+                    const roomNumber = this.getAttribute('data-room-number');
+                    const bookingId = this.getAttribute('data-booking-id');
+                    
+                    if (bookingId) {
+                        // Show booking details if room is booked
+                        showBookingDetails(bookingId);
+                    } else {
+                        // Show add booking modal for the selected room if available
+                        showAddBookingModalForRoom(roomType, roomNumber);
+                    }
+                });
+            });
         }
 
-        // Funksion për të përditësuar kartat e rezervimeve në pamjen mobile
-        function updateMobileBookingCards() {
-            const bookingsContainer = document.querySelector('.bookings-container');
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
+        // Generate room cards by room type
+        function generateRoomCardsByType(roomType) {
+            let html = '';
             
-            // Filtro rezervimet për sot
+            roomData[roomType].forEach(roomNumber => {
+                // Check if room is booked for the selected date
+                const booking = getBookingForRoom(roomType, roomNumber, selectedDate);
+                const isBooked = booking !== null;
+                
+                let statusClass = 'room-status-available';
+                let statusText = 'E Disponueshme';
+                let clientInfo = '';
+                let bookingDates = '';
+                let bookingId = '';
+                
+                if (isBooked) {
+                    statusClass = `room-status-${booking.status}`;
+                    statusText = translateStatus(booking.status);
+                    clientInfo = booking.clientName;
+                    
+                    const checkIn = new Date(booking.checkIn);
+                    const checkOut = new Date(booking.checkOut);
+                    const nights = Math.round((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+                    
+                    bookingDates = `${formatDateForDisplay(booking.checkIn)} - ${formatDateForDisplay(booking.checkOut)} (${nights} netë)`;
+                    bookingId = booking.id;
+                }
+                
+                html += `
+                    <div class="room-card room-card-${roomType}" data-room-type="${roomType}" data-room-number="${roomNumber}" data-booking-id="${bookingId}">
+                        <div class="room-status ${statusClass}">${statusText}</div>
+                        <div class="room-title">${translateRoomType(roomType)} ${roomNumber}</div>
+                        ${isBooked ? `
+                            <div class="room-client">${clientInfo}</div>
+                            <div class="room-details">${bookingDates}</div>
+                        ` : `
+                            <div class="room-details">Kliko për të shtuar një rezervim</div>
+                        `}
+                    </div>
+                `;
+            });
+            
+            return html;
+        }
+
+        // Funksion për të përditësuar pamjen ditore
+        function updateDailyView() {
+            // Filter bookings for the selected date
             const todayBookings = bookings.filter(booking => {
                 const checkIn = new Date(booking.checkIn);
                 const checkOut = new Date(booking.checkOut);
@@ -1364,7 +1868,7 @@
                 return selectedDate >= checkIn && selectedDate < checkOut;
             });
             
-            // Filtro rezervimet e ardhshme
+            // Filter upcoming bookings (future check-ins)
             const futureBookings = bookings.filter(booking => {
                 const checkIn = new Date(booking.checkIn);
                 checkIn.setHours(0, 0, 0, 0);
@@ -1372,82 +1876,211 @@
                 return checkIn > selectedDate;
             }).sort((a, b) => new Date(a.checkIn) - new Date(b.checkIn)).slice(0, 5); // Show only 5 upcoming
             
-            // Krijo HTML për rezervimet e sotme
-            let todayBookingsHTML = '';
+            // Generate HTML for today's bookings
             if (todayBookings.length > 0) {
+                let html = '';
                 todayBookings.forEach(booking => {
-                    const checkIn = new Date(booking.checkIn);
-                    const checkOut = new Date(booking.checkOut);
-                    const nights = Math.round((checkOut - checkIn) / (1000 * 60 * 60 * 24));
-                    
-                    todayBookingsHTML += `
-                        <div class="booking-card" data-booking-id="${booking.id}">
-                            <div class="booking-content border-${booking.roomType}">
-                                <div class="booking-header">
-                                    <div>
-                                        <div class="booking-room">${translateRoomType(booking.roomType)} ${booking.roomNumber}</div>
-                                        <div class="booking-client">${booking.clientName}</div>
-                                    </div>
-                                    <div class="booking-status status-${booking.status}">${translateStatus(booking.status)}</div>
-                                </div>
-                                <div class="booking-date">${formatDateForDisplay(booking.checkIn)} - ${formatDateForDisplay(booking.checkOut)} (${nights} netë)</div>
-                            </div>
-                        </div>
-                    `;
+                    html += generateBookingCardHTML(booking);
                 });
+                dailyBookingsContainer.innerHTML = html;
             } else {
-                todayBookingsHTML = '<div class="booking-card"><div class="booking-content">Nuk ka rezervime për këtë datë</div></div>';
+                dailyBookingsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📅</div>
+                        <div class="empty-title">Nuk ka rezervime për këtë datë</div>
+                        <div class="empty-description">Asnjë dhomë nuk është rezervuar për datën e zgjedhur</div>
+                    </div>
+                `;
             }
             
-            // Krijo HTML për rezervimet e ardhshme
-            let futureBookingsHTML = '';
+            // Generate HTML for upcoming bookings
             if (futureBookings.length > 0) {
+                let html = '';
                 futureBookings.forEach(booking => {
-                    const checkIn = new Date(booking.checkIn);
-                    const checkOut = new Date(booking.checkOut);
-                    const nights = Math.round((checkOut - checkIn) / (1000 * 60 * 60 * 24));
-                    
-                    futureBookingsHTML += `
-                        <div class="booking-card" data-booking-id="${booking.id}">
-                            <div class="booking-content border-${booking.roomType}">
-                                <div class="booking-header">
-                                    <div>
-                                        <div class="booking-room">${translateRoomType(booking.roomType)} ${booking.roomNumber}</div>
-                                        <div class="booking-client">${booking.clientName}</div>
-                                    </div>
-                                    <div class="booking-status status-${booking.status}">${translateStatus(booking.status)}</div>
-                                </div>
-                                <div class="booking-date">${formatDateForDisplay(booking.checkIn)} - ${formatDateForDisplay(booking.checkOut)} (${nights} netë)</div>
-                            </div>
-                        </div>
-                    `;
+                    html += generateBookingCardHTML(booking);
                 });
+                upcomingBookingsContainer.innerHTML = html;
             } else {
-                futureBookingsHTML = '<div class="booking-card"><div class="booking-content">Nuk ka rezervime të ardhshme</div></div>';
+                upcomingBookingsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔮</div>
+                        <div class="empty-title">Nuk ka rezervime të ardhshme</div>
+                        <div class="empty-description">Nuk ka rezervime të planifikuara për datat në vijim</div>
+                    </div>
+                `;
             }
             
-            // Përditëso përmbatjen e container
-            bookingsContainer.innerHTML = `
-                <div class="bookings-section">
-                    <h3 class="section-title">Rezervimet për ${formatDateForDisplay(selectedDate)}</h3>
-                    ${todayBookingsHTML}
-                </div>
-                <div class="bookings-section">
-                    <h3 class="section-title">Rezervimet e ardhshme</h3>
-                    ${futureBookingsHTML}
-                </div>
-            `;
-            
-            // Shto event listeners për kartat e rezervimeve
+            // Add event listeners to booking cards
             document.querySelectorAll('.booking-card[data-booking-id]').forEach(card => {
                 card.addEventListener('click', function() {
                     const bookingId = this.getAttribute('data-booking-id');
-                    currentBooking = bookings.find(b => b.id === bookingId);
-                    if (currentBooking) {
-                        showBookingDetails(currentBooking);
-                    }
+                    showBookingDetails(bookingId);
                 });
             });
+        }
+
+        // Generate booking card HTML
+        function generateBookingCardHTML(booking) {
+            const checkIn = new Date(booking.checkIn);
+            const checkOut = new Date(booking.checkOut);
+            const nights = Math.round((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+            
+            return `
+                <div class="booking-card" data-booking-id="${booking.id}">
+                    <div class="booking-content border-${booking.roomType}">
+                        <div class="booking-header">
+                            <div>
+                                <div class="booking-room">${translateRoomType(booking.roomType)} ${booking.roomNumber}</div>
+                                <div class="booking-client">${booking.clientName}</div>
+                            </div>
+                            <div class="booking-status status-${booking.status}">${translateStatus(booking.status)}</div>
+                        </div>
+                        <div class="booking-date">${formatDateForDisplay(booking.checkIn)} - ${formatDateForDisplay(booking.checkOut)} (${nights} netë)</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Funksion për të përditësuar kalendarin mujor
+        function updateMonthlyCalendar() {
+            // Generate header with days of the month
+            calendarHeader.innerHTML = '<th>Dhoma</th>';
+            
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(currentYear, currentMonth, day);
+                const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+                const isSelected = date.getDate() === selectedDate.getDate() && 
+                                  date.getMonth() === selectedDate.getMonth() && 
+                                  date.getFullYear() === selectedDate.getFullYear();
+                
+                const th = document.createElement('th');
+                th.textContent = day;
+                if (isWeekend) th.classList.add('weekend');
+                if (isSelected) th.classList.add('selected-date');
+                calendarHeader.appendChild(th);
+            }
+            
+            // Generate rows for each room
+            calendarBody.innerHTML = '';
+            
+            // Add Dopio rooms
+            roomData.dopio.forEach(roomNumber => {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.textContent = `Dhomë Dopio ${roomNumber}`;
+                row.appendChild(cell);
+                
+                // Add cells for each day
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const date = new Date(currentYear, currentMonth, day);
+                    const booking = getBookingForRoom('dopio', roomNumber, date);
+                    
+                    const td = document.createElement('td');
+                    td.className = `calendar-cell cell-${booking ? booking.status : 'available'} cell-dopio`;
+                    if (booking) {
+                        td.textContent = booking.clientName.split(' ')[0];
+                        td.setAttribute('data-booking-id', booking.id);
+                        
+                        td.addEventListener('click', () => {
+                            showBookingDetails(booking.id);
+                        });
+                    } else {
+                        td.addEventListener('click', () => {
+                            const clickedDate = new Date(currentYear, currentMonth, day);
+                            showAddBookingModalForRoom('dopio', roomNumber, clickedDate);
+                        });
+                    }
+                    
+                    row.appendChild(td);
+                }
+                
+                calendarBody.appendChild(row);
+            });
+            
+            // Add Triple rooms
+            roomData.triple.forEach(roomNumber => {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.textContent = `Dhomë Triple ${roomNumber}`;
+                row.appendChild(cell);
+                
+                // Add cells for each day
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const date = new Date(currentYear, currentMonth, day);
+                    const booking = getBookingForRoom('triple', roomNumber, date);
+                    
+                    const td = document.createElement('td');
+                    td.className = `calendar-cell cell-${booking ? booking.status : 'available'} cell-triple`;
+                    if (booking) {
+                        td.textContent = booking.clientName.split(' ')[0];
+                        td.setAttribute('data-booking-id', booking.id);
+                        
+                        td.addEventListener('click', () => {
+                            showBookingDetails(booking.id);
+                        });
+                    } else {
+                        td.addEventListener('click', () => {
+                            const clickedDate = new Date(currentYear, currentMonth, day);
+                            showAddBookingModalForRoom('triple', roomNumber, clickedDate);
+                        });
+                    }
+                    
+                    row.appendChild(td);
+                }
+                
+                calendarBody.appendChild(row);
+            });
+            
+            // Add Suite rooms
+            roomData.suite.forEach(roomNumber => {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.textContent = `Suite ${roomNumber}`;
+                row.appendChild(cell);
+                
+                // Add cells for each day
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const date = new Date(currentYear, currentMonth, day);
+                    const booking = getBookingForRoom('suite', roomNumber, date);
+                    
+                    const td = document.createElement('td');
+                    td.className = `calendar-cell cell-${booking ? booking.status : 'available'} cell-suite`;
+                    if (booking) {
+                        td.textContent = booking.clientName.split(' ')[0];
+                        td.setAttribute('data-booking-id', booking.id);
+                        
+                        td.addEventListener('click', () => {
+                            showBookingDetails(booking.id);
+                        });
+                    } else {
+                        td.addEventListener('click', () => {
+                            const clickedDate = new Date(currentYear, currentMonth, day);
+                            showAddBookingModalForRoom('suite', roomNumber, clickedDate);
+                        });
+                    }
+                    
+                    row.appendChild(td);
+                }
+                
+                calendarBody.appendChild(row);
+            });
+        }
+
+        // Get booking for a specific room and date
+        function getBookingForRoom(roomType, roomNumber, date) {
+            return bookings.find(booking => {
+                const checkIn = new Date(booking.checkIn);
+                const checkOut = new Date(booking.checkOut);
+                
+                checkIn.setHours(0, 0, 0, 0);
+                checkOut.setHours(0, 0, 0, 0);
+                date.setHours(0, 0, 0, 0);
+                
+                return booking.roomType === roomType && 
+                       booking.roomNumber === roomNumber && 
+                       date >= checkIn && date < checkOut;
+            }) || null;
         }
 
         // Funksion për të formatuar një datë në formatin YYYY-MM-DD
@@ -1504,31 +2137,77 @@
             bookingModal.style.display = 'block';
         }
 
+        // Funksion për të shfaqur modalin e shtimit të rezervimit për një dhomë specifike
+        function showAddBookingModalForRoom(roomType, roomNumber, date = null) {
+            modalTitle.textContent = 'Shto Rezervim të Ri';
+            bookingForm.reset();
+            
+            // Vendos llojin e dhomës
+            roomTypeSelect.value = roomType;
+            updateRoomNumbers();
+            
+            // Vendos numrin e dhomës
+            roomNumberSelect.value = roomNumber;
+            
+            // Vendos datën e check-in
+            const checkInDate = date || selectedDate;
+            checkInInput.value = formatDate(checkInDate);
+            
+            // Vendos datën e daljes paraprakisht një ditë pas
+            const checkOutDate = new Date(checkInDate);
+            checkOutDate.setDate(checkOutDate.getDate() + 1);
+            checkOutInput.value = formatDate(checkOutDate);
+            
+            currentBooking = null;
+            bookingModal.style.display = 'block';
+        }
+
         // Funksion për të shfaqur detajet e rezervimit
-        function showBookingDetails(booking) {
-            const checkIn = new Date(booking.checkIn);
-            const checkOut = new Date(booking.checkOut);
-            const nights = Math.round((checkOut - checkIn) / (1000 * 60 * 60 * 24));
-            const createdDate = booking.createdAt ? new Date(booking.createdAt).toLocaleString('sq-AL') : 'E panjohur';
-            const updatedDate = booking.updatedAt ? new Date(booking.updatedAt).toLocaleString('sq-AL') : 'E panjohur';
+        function showBookingDetails(bookingId) {
+            currentBooking = bookings.find(b => b.id === bookingId);
             
-            const details = `
-                <div class="booking-details">
-                    <p><strong>Lloji i Dhomës:</strong> ${translateRoomType(booking.roomType)}</p>
-                    <p><strong>Numri i Dhomës:</strong> ${booking.roomNumber}</p>
-                    <p><strong>Emri i Klientit:</strong> ${booking.clientName}</p>
-                    <p><strong>Check-in:</strong> ${formatDateForDisplay(booking.checkIn)} ${checkIn.getFullYear()}</p>
-                    <p><strong>Check-out:</strong> ${formatDateForDisplay(booking.checkOut)} ${checkOut.getFullYear()}</p>
-                    <p><strong>Netë:</strong> ${nights}</p>
-                    <p><strong>Statusi:</strong> ${translateStatus(booking.status)}</p>
-                    <p><strong>Komente:</strong> ${booking.comments || 'Asnjë'}</p>
-                    <p><strong>Krijuar më:</strong> ${createdDate}</p>
-                    <p><strong>Përditësuar më:</strong> ${updatedDate}</p>
-                </div>
-            `;
-            
-            bookingDetailsContent.innerHTML = details;
-            bookingDetailsModal.style.display = 'block';
+            if (currentBooking) {
+                const checkIn = new Date(currentBooking.checkIn);
+                const checkOut = new Date(currentBooking.checkOut);
+                const nights = Math.round((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+                const createdDate = currentBooking.createdAt ? new Date(currentBooking.createdAt).toLocaleString('sq-AL') : 'E panjohur';
+                const updatedDate = currentBooking.updatedAt ? new Date(currentBooking.updatedAt).toLocaleString('sq-AL') : 'E panjohur';
+                
+                const details = `
+                    <div class="booking-details-panel">
+                        <div class="details-header">
+                            <div class="details-title">${translateRoomType(currentBooking.roomType)} ${currentBooking.roomNumber}</div>
+                            <div class="details-status status-${currentBooking.status}">${translateStatus(currentBooking.status)}</div>
+                        </div>
+                        
+                        <div class="details-info">
+                            <div class="details-label">Emri i Klientit:</div>
+                            <div class="details-value">${currentBooking.clientName}</div>
+                            
+                            <div class="details-label">Check-in:</div>
+                            <div class="details-value">${formatDateForDisplay(currentBooking.checkIn)} ${checkIn.getFullYear()}</div>
+                            
+                            <div class="details-label">Check-out:</div>
+                            <div class="details-value">${formatDateForDisplay(currentBooking.checkOut)} ${checkOut.getFullYear()}</div>
+                            
+                            <div class="details-label">Netë:</div>
+                            <div class="details-value">${nights}</div>
+                            
+                            <div class="details-label">Komente:</div>
+                            <div class="details-value">${currentBooking.comments || 'Asnjë'}</div>
+                            
+                            <div class="details-label">Krijuar më:</div>
+                            <div class="details-value">${createdDate}</div>
+                            
+                            <div class="details-label">Përditësuar më:</div>
+                            <div class="details-value">${updatedDate}</div>
+                        </div>
+                    </div>
+                `;
+                
+                bookingDetailsContent.innerHTML = details;
+                bookingDetailsModal.style.display = 'block';
+            }
         }
 
         // Funksion për të shfaqur modalin e ndryshimit të rezervimit
@@ -1557,7 +2236,14 @@
                 
                 if (deleteBookingFromDatabase(currentBooking.id)) {
                     bookings = bookings.filter(b => b.id !== currentBooking.id);
-                    applyBookingsToCalendar();
+                    updateBookingStats();
+                    
+                    // Rifresko të gjitha pamjet
+                    updateRoomListView();
+                    updateDailyView();
+                    updateMonthlyCalendar();
+                    updateCalendarIndicators();
+                    
                     bookingDetailsModal.style.display = 'none';
                     showToast('Rezervimi u fshi me sukses!');
                 } else {
@@ -1643,7 +2329,14 @@
             
             // Ruaj në bazën e të dhënave
             if (saveBookingToDatabase(newBooking)) {
-                applyBookingsToCalendar();
+                updateBookingStats();
+                
+                // Rifresko të gjitha pamjet
+                updateRoomListView();
+                updateDailyView();
+                updateMonthlyCalendar();
+                updateCalendarIndicators();
+                
                 bookingModal.style.display = 'none';
                 showToast('Rezervimi u ruajt me sukses!');
             } else {
@@ -1768,8 +2461,7 @@
                 toastNotification.classList.remove('show');
             }, 3000);
         }
-
-        // Funksion për të shfaqur spinner loading
+// Funksion për të shfaqur spinner loading
         function showLoader() {
             loader.style.display = 'flex';
         }
@@ -1787,6 +2479,8 @@
                 currentYear--;
             }
             initializeDateSlider();
+            updateMonthlyCalendar();
+            updateCalendarIndicators();
         });
 
         nextMonthButton.addEventListener('click', function() {
@@ -1796,16 +2490,21 @@
                 currentYear++;
             }
             initializeDateSlider();
+            updateMonthlyCalendar();
+            updateCalendarIndicators();
         });
 
-        addBookingMobileButton.addEventListener('click', showAddBookingModal);
+        addBookingButton.addEventListener('click', showAddBookingModal);
         floatingAddButton.addEventListener('click', showAddBookingModal);
 
         cancelBookingButton.addEventListener('click', function() {
             bookingModal.style.display = 'none';
         });
 
-        saveBookingButton.addEventListener('click', saveBooking);
+        saveBookingButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            saveBooking();
+        });
 
         closeDetailsButton.addEventListener('click', function() {
             bookingDetailsModal.style.display = 'none';
@@ -1830,3 +2529,4 @@
     </script>
 </body>
 </html>
+
